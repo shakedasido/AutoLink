@@ -105,16 +105,19 @@ pip install opencv-python RPi.GPIO numpy
 
    When a marker is detected, the system will calculate the optimal path, adjust motor speeds and directions, and move toward the wheelchair to complete the attachment autonomously.
 
-### Key Controls (for Keyboard Interface)
+### keys Control (for User Keyboard Interface)
 
+- **C**: Connection mode - switches to automatic connection attempt mode to the wheelchair
 - **Up Arrow**: Move forward
 - **Down Arrow**: Move backward
 - **Left Arrow**: Turn left
 - **Right Arrow**: Turn right
-- **U/Y**: Control arm movement for attachment
-- **L**: Toggle latch mechanism
-- **C**: Connection mode - switches to automatic connection attempt mode to the wheelchair
+- **esc**: Emergency stop key to halt all system activity immediately.
 - **D**: Disconnect mode - disconnects and travels back a little
+
+### More Keys Control (for tests/testers)
+- **U/Y**: Control arm movement for attachment (Up/Down)
+- **L**: Toggle latch mechanism (For machine's toggle latch)
 
 ## Future Development
 
