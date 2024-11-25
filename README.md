@@ -10,13 +10,13 @@ AutoLink is an embedded real-time control system that autonomously navigates and
 - [Hardware Requirements](#hardware-requirements)
 - [Software Requirements](#software-requirements)
 - [Installation](#installation)
+- [Camera Calibration Instructions](#camera-calibration-instructions)
 - [Code Structure](#code-structure)
 - [Usage](#usage)
 - [Future Development](#future-development)
-- [Contributing](#contributing)
+- [Troubleshooting](#troubleshooting)
 - [License](#license)
 
----
 
 ## Overview
 
@@ -60,18 +60,66 @@ Install all required packages using pip:
 pip install opencv-python RPi.GPIO numpy
 ```
 
+### System-Level Dependencies
+
+1. **Ensure pip is installed**:
+   ```bash
+   sudo apt update
+   sudo apt install python3-pip
+   ```
+
+2. **Enable the Raspberry Pi Camera**:
+   Open the Raspberry Pi configuration tool:
+   ```bash
+   sudo raspi-config
+   ```
+   Navigate to **Interfacing Options > Camera**, and enable the camera. Reboot the Raspberry Pi if prompted.
+
+3. **Verify GPIO and Camera Setup**:
+   Ensure that the GPIO pins are accessible, and the camera module is properly connected.
+
+
 ## Installation
 
 1. **Clone the Repository**:
 
    ```bash
-   git clone https://[https://github.com/shakedasido/AutoLink.git]
+   git clone https://github.com/shakedasido/AutoLink.git
    cd AutoLink
    ```
 
 2. **Place ArUco Markers** on the wheelchair in locations that are visible to the camera. Make sure to measure the size of the marker for calibration.
 
-3. **Run Initial Camera Calibration**: Calibrate the camera using a checkerboard pattern to correct any distortion (if calibration data is not already provided). This step ensures accurate detection and positioning of the wheelchair.
+3. **Run Initial Camera Calibration**: See the [Camera Calibration Instructions](#camera-calibration-instructions) section.
+
+
+## Camera Calibration Instructions
+
+Accurate calibration is essential for precise ArUco marker detection. Follow these steps to calibrate your camera and save the calibration data:
+
+1. **Prepare Calibration Files**:
+   - Download or print a checkerboard pattern. You can use a standard 9x6 or 7x5 checkerboard grid.
+   - Place the checkerboard on a flat surface and ensure it is well-lit.
+
+2. **Run the Calibration Script**:
+   - Navigate to the `AutoLink` directory and run the calibration script provided in the repository:
+     ```bash
+     python camera_calibration.py
+     ```
+   - The script will guide you to capture multiple images of the checkerboard from different angles. Ensure all corners are visible in each capture.
+
+3. **Save Calibration Data**:
+   - The script will generate a file named `arrays.npz` containing the following:
+     - **Camera Matrix**: Corrects perspective distortion.
+     - **Distortion Coefficients**: Removes lens distortion.
+     - **Rotation and Translation Vectors**: Maps 3D objects to 2D projections.
+
+4. **Verify Calibration**:
+   - Test the calibration by running:
+     ```bash
+     python aruco_detection.py
+     ```
+   - Place an ArUco marker in the camera’s view. Ensure it is detected and annotated correctly on the live feed.
 
 ## Code Structure
 
@@ -127,6 +175,24 @@ AutoLink is designed with modularity and scalability in mind. Future improvement
 - **Enhanced Physical Components**: Improve the device’s physical design with wheels that offer greater traction, and ensure all mechanical parts are compatible for optimal performance.
 - **Public Deployment**: Adapt AutoLink for use in public spaces like nursing homes and malls, allowing multiple users to access the device as needed.
 - **Safety Features**: Incorporate proximity sensors and collision avoidance to enhance safety in crowded spaces.
+
+## Troubleshooting
+
+1. **Camera Not Detected**:
+   - Verify that the camera is enabled in `raspi-config`.
+   - Check the physical connection of the camera module to the Raspberry Pi.
+
+2. **ArUco Marker Not Detected**:
+   - Ensure the camera calibration file (`arrays.npz`) is present in the project directory.
+   - Check that the marker is visible and well-lit.
+
+3. **Motors Not Responding**:
+   - Ensure GPIO pins are connected correctly.
+   - Verify motor control logic in `GPIO_activation.py`.
+
+4. **Unexpected System Behavior**:
+   - Check the console for error messages.
+   - Restart the system by rebooting the Raspberry Pi.
 
 ## License
 
