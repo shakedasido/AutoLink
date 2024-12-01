@@ -104,6 +104,7 @@ def aruco_detecting(frame):
 
                 # Draw on the camera window
                 cv.polylines(frame, [corners], True, (0, 255, 255), 4, cv.LINE_AA)
+                cv.drawFrameAxes(frame, cam_mat, dist_co, rVec[i], tVec[i], 4, 4)
 
                 # Calculate distance to marker
                 distance = np.sqrt(np.sum(tVec[i] ** 2))
